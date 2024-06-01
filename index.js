@@ -1,25 +1,39 @@
 import express from "express";
-import router from "./routes/routes.js";
 import cors from 'cors'
-import DBConnection from "./database/db.js";
 import dotenv from 'dotenv';
+
+import DBConnection from "./database/db.js";
+import router from "./routes/routes.js";
+
+dotenv.config();
+
 
 const app = express();
 
+// middlewares
 app.use(cors());
-app.use('/',router);
 
-dotenv.config();
+
 const PORT = process.env.PORT||5000
 
-//calling databse 
+// Database connection
 DBConnection();
 
+
+// Default Route
+app.get("/",(req,res)=>{
+    return res.send("<h1>Hello</h1>")
+});
+
+
+
+// file upload routes
+app.use('/',router);
+
+// -----------------------------------------------------------
+
+
+// listen on the port
 app.listen(PORT,()=>{
     console.log(`App is running on port no ${PORT}`)
-})
-
-//default route
-app.get("/",(req,res)=>{
-    res.send("<h1>Hello</h1>")
 })
